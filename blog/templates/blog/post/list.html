@@ -13,6 +13,6 @@
 <p class="date">
     Published {{ post.publish }} by {{ post.author }}
 </p>
-{{ post.body|truncateword:30|linebreaks }}
-{% endfor %}
+        {{ post.body|truncatewords:30|linebreaks }}
+    {% endfor %}
 {% endblock %}
