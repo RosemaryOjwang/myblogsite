@@ -6,8 +6,8 @@ from django.core.paginator import Paginator
 # Create your views here.
 def post_list(request):
      post_list = Post.published.all()
-     #paginator with 3 posts per page
-     paginator = Paginator(post_list, 3)
+     #paginator with 5 posts per page
+     paginator = Paginator(post_list, 5)
      page_number = request.GET.get('page', 1)
      posts = paginator.page(page_number)
 
@@ -24,6 +24,5 @@ def post_detail(request, year, month, day, post):
                             publish__day=day)
 
     return render(request,
-                 'blog/post/detail.html',
-                 {'post': post})
-    
+                'blog/post/detail.html',
+                {'post': post})
