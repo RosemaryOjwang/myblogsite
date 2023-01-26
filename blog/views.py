@@ -1,10 +1,20 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Post
 from django.http import Http404
+from django.views.generic import ListView
 from django.core.paginator import Paginator, EmptyPage,\
                                   PageNotAnInteger
 
 # Create your views here.
+class PostListView(ListView):
+    """
+    Alternative post list view
+    """
+    queryset =Post.published.all()
+    context_object_name ='posts'
+    paginate_by = 5
+    template_name = 'blog/post/list.html'
+"""
 def post_list(request):
      post_list = Post.published.all()
      #paginator with 5 posts per page
@@ -21,6 +31,7 @@ def post_list(request):
      return render(request,
                   'blog/post/list.html',
                    {'posts': posts})
+"""
 
 def post_detail(request, year, month, day, post):
     post = get_object_or_404(Post,
