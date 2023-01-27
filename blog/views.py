@@ -43,10 +43,15 @@ def post_detail(request, year, month, day, post):
                             publish__year=year,
                             publish__month=month,
                             publish__day=day)
-
+    #List of active comments for this post
+    comments = post.comments.filter(active=True)
+    #Form for users to comment
+    form = CommentForm()
     return render(request,
                 'blog/post/detail.html',
-                {'post': post})
+                {'post': post,
+                 'comments': comments,
+                 'form': form})
 
 def post_share(request, post_id):
      # Retrieve post by id
@@ -74,21 +79,21 @@ def post_share(request, post_id):
                                                     'form': form,
                                                     'sent': sent})
 
-    @require_POST
-    def post_comment(request, post_id):
-        post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
-        comment = None
-        #A comment has been posted
-        form = CommentForm(data=request.POST)
-        if form.is_valid():
-            #Create a comment object without saving it to the database
-            comment = form.save(commit=False)
-            #Assign the post to the comment
-            comment.post = post
-            #Save the comment to the database
-            comment.save()
-        return render(request, 'blog/post/comment.html',
-                      {'post': post,
-                      'form': form,
-                      'comment': comment})
+@require_POST
+def post_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
+    comment = None
+    #A comment has been posted
+    form = CommentForm(data=request.POST)
+    if form.is_valid():
+        #Create a comment object without saving it to the database
+        comment = form.save(commit=False)
+        #Assign the post to the comment
+        comment.post = post
+        #Save the comment to the database
+        comment.save()
+    return render(request, 'blog/post/comment.html',
+                  {'post': post,
+                   'form': form,
+                   'comment': comment})
 
