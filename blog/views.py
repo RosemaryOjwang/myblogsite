@@ -7,19 +7,22 @@ from django.views.decorators.http import require_POST
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage,\
                                   PageNotAnInteger
+from taggit.models import Tag
 
 # Create your views here.
-class PostListView(ListView):
-    """
-    Alternative post list view
-    """
-    queryset =Post.published.all()
-    context_object_name ='posts'
-    paginate_by = 5
-    template_name = 'blog/post/list.html'
 
-def post_list(request):
+#class PostListView(ListView):
+    #queryset =Post.published.all()
+    #context_object_name ='posts'
+    #paginate_by = 5
+    #template_name = 'blog/post/list.html'
+
+def post_list(request, tag_slug=None):
      post_list = Post.published.all()
+     tag = None
+     if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        post_list = post_list.filter(tags__in=[tag])
      #paginator with 5 posts per page
      paginator = Paginator(post_list, 5)
      page_number = request.GET.get('page')
@@ -33,7 +36,8 @@ def post_list(request):
         posts = paginator.page(paginator.num_pages)
      return render(request,
                   'blog/post/list.html',
-                   {'posts': posts})
+                   {'posts': posts,
+                   'tag': tag})
 
 
 def post_detail(request, year, month, day, post):
