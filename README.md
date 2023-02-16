@@ -3,7 +3,7 @@
 
 
 ## Description
-_A simple blog application that allows users to navigate through all publisg=hed posts and read single posts._
+_A simple blog application that allows users to navigate through all published posts and read single posts._
 
 ## Technologies Used
 * Django
