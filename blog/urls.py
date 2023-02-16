@@ -5,9 +5,6 @@ from . import views
 from .feeds import LatestPostsFeed
 
 app_name = 'blog'   
-#sitemaps = {
-#    'posts': PostSitemap
-#}
 
 urlpatterns = [
     #post views
@@ -22,7 +19,5 @@ urlpatterns = [
            views.post_share, name='post_share'),
     path('<int:post_id>/comment/',
          views.post_comment, name='post_comment'),
-    #path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
-          #name='django.contrib.sitemaps.views.sitemap'),
     path('feed/', LatestPostsFeed(), name='post_feed'),
 ]
